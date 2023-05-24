@@ -21,6 +21,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('myApp.urls')),
+    path('myApp/', include('myApp.urls')),
+    path('',include('frontend.urls'))
     #path('', TemplateView.as_view(template_name='index.html')),
 ]
