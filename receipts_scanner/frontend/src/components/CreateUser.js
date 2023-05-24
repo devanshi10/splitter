@@ -6,25 +6,44 @@ const CreateUser = () => {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Perform user creation logic
-    // For simplicity, we'll just log the user details to the console
-    /*
-    console.log("Email:", email);
-    console.log("First Name:", firstName);
-    console.log("Last Name:", lastName);
-    console.log("Password:", password);
-    */
 
-    // Reset the form fields
-    setEmail("");
-    setFirstName("");
-    setLastName("");
-    setPassword("");
-  };
+    try {
+        const response = await fetch("/myApp/userprofile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
 
+
+          },
+          body: JSON.stringify({
+            email,
+            first_name: firstName,
+            last_name: lastName,
+            password,
+          }),
+        });
+  
+        if (response.ok) {
+          // User created successfully
+          // Redirect to a success page or perform any necessary actions
+          setEmail("");
+          setFirstName("");
+          setLastName("");
+          setPassword("");
+
+        } else {
+          // Handle error response
+          console.error("Error:", response.statusText);
+        }
+      } catch (error) {
+        // Handle network or other errors
+        console.error(error);
+      }
+    };
   return (
     <div>
       <h1>Create User</h1>

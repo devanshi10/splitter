@@ -8,7 +8,7 @@ from rest_framework.response import Response
 # Create your views here.
 
 class UserView(APIView):
-    queryset = UserProfile.objects.all()
+    #queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
     def post(self, request) -> Response:
@@ -16,6 +16,6 @@ class UserView(APIView):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            name = serializer.validated_data.get('first_name')
-            return Response(serializer.validated_data,status=status.HTTP_200_OK)
+            #name = serializer.validated_data.get('first_name')
+            return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
