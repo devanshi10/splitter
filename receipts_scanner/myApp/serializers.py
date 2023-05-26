@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from .models import UserProfile
+from .models import UserProfile, Debt, ExpenseGroup
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ('email', 'first_name', 'last_name', 'password')
         extra_kwargs = {'password': {'write_only': True, 'style': {'input_type': 'password'}}}
-    
+  
     def create(self, validated_data):
         """Creates and returns a new user"""
         user = UserProfile.objects.create_user(
@@ -16,4 +16,16 @@ class UserProfileSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+
+    
+class DebtSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Debt
+        fields = ('borrower', 'reciever', 'amount')
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExpenseGroup
+        fields = ('id', 'group_name', 'members')
 

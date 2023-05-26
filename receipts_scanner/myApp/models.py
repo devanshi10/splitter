@@ -4,6 +4,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 import string
 import random
+import uuid
 
 
 # Create your models here.
@@ -58,5 +59,16 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
     
+class Debt(models.Model):
+    borrower = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='from_user')
+    reciever = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='to_user')
+    amount = models.IntegerField()
+
+
+class ExpenseGroup(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    group_name = models.CharField(max_length=255, unique=True)
+    debts = models.ManyToManyField(Debt, null=True)
+    members = models.ManyToManyField(UserProfile)
 
 
