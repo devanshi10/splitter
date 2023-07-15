@@ -4,7 +4,7 @@ const CreateGroup = () => {
   const [groupName, setGroupName] = useState("");
   const [debts, setDebts] = useState("");
   const [members, setMembers] = useState([]);
-
+  const [allMembers, setAllMembers] = useState([]);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -17,14 +17,22 @@ const CreateGroup = () => {
   
       });
         const data = await response.json();
-        setMembers(data);
+        setAllMembers(data);
        
     };
   
     fetchMembers();
   }, []);
 
+  const handleCheckboxChange = (event) => {
+    const { value, checked } = event.target;
 
+    if (checked) {
+      setMembers([...members, value]);
+    } else {
+      setMembers(members.filter(member => member !== value));
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -69,15 +77,19 @@ const CreateGroup = () => {
         </div>
         <div>
           <label>Members:</label>
-          <select
-            multiple
-            value={members}
-            onChange={(e) => setMembers(Array.from(e.target.selectedOptions, option => option.value))}
-          >
-            {members.map((member, index) => (
-              <option key={index} value={member}>{member}</option>
-            ))}
-          </select>
+          {allMembers.map((member, index) => (
+        <div key={index}>
+          <label>
+            <input
+              type="checkbox"
+              value={member}
+              checked={members.includes(member)}
+              onChange={handleCheckboxChange}
+            />
+            {member}
+          </label>
+        </div>
+      ))}
         </div>
         <button type="submit">Create Group</button>
       </form>

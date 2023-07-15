@@ -65,10 +65,23 @@ class Debt(models.Model):
     amount = models.IntegerField()
 
 
-class ExpenseGroup(models.Model):
+class Group(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     group_name = models.CharField(max_length=255, unique=True)
     debts = models.ManyToManyField(Debt, null=True)
     members = models.ManyToManyField(UserProfile)
+
+    def __str__(self):
+        return self.group_name
+
+class Expense(models.Model):
+    expense_name = models.CharField(max_length=255)
+    selectedGroup = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='selected_group')
+    paidBy = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='paid_by')
+    splitbtw = models.ManyToManyField(UserProfile)
+    amount = models.FloatField()
+
+
+
 
 

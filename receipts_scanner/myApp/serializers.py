@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserProfile, Debt, ExpenseGroup
+from .models import UserProfile, Debt, Group, Expense
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,6 +26,15 @@ class DebtSerializer(serializers.ModelSerializer):
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ExpenseGroup
+        model = Group
         fields = ('id', 'group_name', 'members')
+
+    def get_members(self, obj):
+        return list(obj.members.values_list('email', flat=True))
+
+
+class ExpenseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Expense
+        fields = ('expense_name','selectedGroup','paidBy','splitbtw','amount')
 
