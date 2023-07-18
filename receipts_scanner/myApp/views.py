@@ -30,14 +30,19 @@ class UserView(APIView):
     
 class CreateGroupView(APIView):
     serializer_class = GroupSerializer
-    def post(self, request):
+    def post(self, request) -> Response:
+        
         all_users = []
         for user_email in request.data.get('members', []):
-            all_users.append(UserProfile.objects.get(email=user_email).id)
+            all_users.append(UserProfile.objects.get(email=user_email))
         request.data['members'] = all_users
+        
+     
         serializer = self.serializer_class(data=request.data)
+        
         if serializer.is_valid():
             serializer.save()
+  
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     '''
@@ -84,7 +89,8 @@ class CreateExpenseView(APIView):
     serializer_class = ExpenseSerializer
 
     def post(self, request) -> Response:
-    
+        
+
             
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
@@ -95,10 +101,8 @@ class CreateExpenseView(APIView):
     
     def get(self,request) -> Response:
         users = Expense.objects.all()
-        emails = [user.expense_name for user in users]
-        if emails == []:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        return Response(emails, status=status.HTTP_201_CREATED)
+        name = [user.expense_name for user in users]
+        return Response(name, status=status.HTTP_201_CREATED)
     
     def delete(self, request):
         # Custom delete logic
@@ -129,10 +133,10 @@ class GetExpenseView(APIView):
             count = expense.splitbtw.count()
             for person in owers:
                 balance[person.email] = balance.get(person.email,0) - expense.amount/count
-        
+        Group.objects.get(group_name=group).debts.all().delete()
         self.helper_balance(balance, group)
         debts = []   
-        debts_all = Debt.objects.all()
+        debts_all = Group.objects.get(group_name=group).debts.all()
         for debt in debts_all:
             debts.append([debt.borrower.get_full_name(), debt.reciever.get_full_name(), debt.amount])
         return Response(debts, status=status.HTTP_201_CREATED)

@@ -44,9 +44,11 @@ const ShowExpense = () => {
             
            
         };
+
+        
         
         fetchExpense();
-    
+        
     }, [groupName]);
 
     
@@ -54,7 +56,7 @@ const ShowExpense = () => {
   
     return (
       <div>
-        <h1>Create Expense</h1>
+        <h1>Balances</h1>
      
           <div>
             <label>Groups:</label>
@@ -69,7 +71,7 @@ const ShowExpense = () => {
             </select>
           </div>
           <div>
-          <h2>Debts:</h2>
+          
       {debts.map((debt, index) => (
         <div key={index}>
           <p>{debt[0]} owes {debt[1]} ${debt[2]}</p>

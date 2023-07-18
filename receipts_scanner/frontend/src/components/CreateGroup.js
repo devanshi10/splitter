@@ -43,8 +43,8 @@ const CreateGroup = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+  
           group_name: groupName,
-          debts,
           members: members,
         }),
       });
@@ -58,7 +58,8 @@ const CreateGroup = () => {
       }
     } catch (error) {
       // Handle network or other errors
-      console.error(error);
+      
+      console.error("Error:", error);
     }
   };
 

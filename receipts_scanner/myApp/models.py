@@ -66,9 +66,9 @@ class Debt(models.Model):
 
 
 class Group(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id_given = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     group_name = models.CharField(max_length=255, unique=True)
-    debts = models.ManyToManyField(Debt, null=True)
+    debts = models.ManyToManyField(Debt, blank=True)
     members = models.ManyToManyField(UserProfile)
 
     def __str__(self):

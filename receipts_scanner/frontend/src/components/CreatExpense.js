@@ -5,7 +5,7 @@ const CreateExpense = () => {
   const [paidBy, setPaidBy] = useState([]);
   const [groups, setGroups] = useState([]);
   const [splitbtw, setSplitbtw] = useState([]);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(0.0);
 
 
   useEffect(() => {
@@ -64,8 +64,8 @@ const CreateExpense = () => {
         },
         body: JSON.stringify({
           expense_name: expenseName,
-          selectedGroup: groups,
-          paidBy,
+          selectedGroup: groups[0],
+          paidBy: paidBy[0],
           splitbtw,
           amount
         }),
